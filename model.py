@@ -8,7 +8,7 @@ import sklearn.metrics as metrics
 from sklearn.linear_model import LogisticRegression
 import seaborn as sns
 
-PATH = 'Crop_recommendation.csv'
+PATH = 'data/Crop_recommendation.csv'
 
 # Load the csv file data into the data variable using pandas
 data = pd.read_csv(PATH)
@@ -53,8 +53,11 @@ for i, feature in enumerate(features):
 sns.pairplot(data, hue='label')
 
 # Find correlation between features
+# Select only numeric columns
+numeric_data = data.select_dtypes(include=[np.number])
+
 fig, ax = plt.subplots(1, 1, figsize=(15, 9))
-sns.heatmap(data.corr(),
+sns.heatmap(numeric_data.corr(),
 			annot=True,
 			cmap='viridis')
 ax.set(xlabel='features')
@@ -67,9 +70,11 @@ plt.show()
 
 
 # Separate input and ouput variables
-features = data[['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall']]
+features = data[['N', 'P', 'K', 'temperature',
+				'humidity', 'ph', 'rainfall']]
 
 labels = data['label']
+
 
 # Model training
 
@@ -79,13 +84,14 @@ X_train, X_test,\
 									test_size=0.2,
 									random_state=42)
 
+
 # Pass the training set into the
 # LogisticRegression model from Sklearn
-LogReg = LogisticRegression(random_state=42)\
+LogisticRegressionModel = LogisticRegression(random_state=42)\
 .fit(X_train, Y_train)
 
 # Predict the values for the test dataset
-predicted_values = LogReg.predict(X_test)
+predicted_values = LogisticRegressionModel.predict(X_test)
 
 # Measure the accuracy of the test 
 # set using accuracy_score metric
@@ -105,5 +111,5 @@ print(metrics.classification_report(Y_test,
 filename = 'CropPrediction.pkl'
 filepath = './models'
 
-pickle.dump(LogReg, open(filepath + filename, 'wb'))
+pickle.dump(LogisticRegressionModel, open(filepath + filename, 'wb'))
 
