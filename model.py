@@ -38,15 +38,15 @@ plt.rcParams['figure.dpi'] = 60
 features = ['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall']
 
 for i, feature in enumerate(features):
-    plt.subplot(4,2,i+1)
-    sns.distplot(data[feature], color='greenyellow')
-    if i < 3:
-        plt.title(f'Ration of {feature}', fontsize = 12)
-    else:
-        plt.title(f'Distribution of {feature}', fontsize=12)
+	plt.subplot(4,2,i+1)
+	sns.histplot(data[feature], color='greenyellow', kde=True)
+	if i < 3:
+		plt.title(f'Ration of {feature}', fontsize = 12)
+	else:
+		plt.title(f'Distribution of {feature}', fontsize=12)
 
-    plt.tight_layout()
-    plt.grid()
+	plt.tight_layout()
+	plt.grid()
     
 
 # Feature distribution for different crops
@@ -87,8 +87,7 @@ X_train, X_test,\
 
 # Pass the training set into the
 # LogisticRegression model from Sklearn
-LogisticRegressionModel = LogisticRegression(random_state=42)\
-.fit(X_train, Y_train)
+LogisticRegressionModel = LogisticRegression(max_iter=1000000, random_state=42).fit(X_train, Y_train)
 
 # Predict the values for the test dataset
 predicted_values = LogisticRegressionModel.predict(X_test)
