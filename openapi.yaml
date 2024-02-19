@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  title: Crop Prediction API
+  title: Crop Recommendation API
   version: 1.0.0
 servers:
   - url: https://supreme-enigma-wxqwx5qqwjxf5qp4-5050.preview.app.github.dev
 paths:
-  /:
+  /recommend:
     post:
-      summary: Predict top crops
+      summary: Recommend top crops
       requestBody:
         required: true
         content:
@@ -60,9 +60,9 @@ paths:
                 properties:
                   error:
                     type: string
-  /recommend:
+  /:
     post:
-      summary: Predict top crops
+      summary: Recommend top crops
       requestBody:
         $ref: '#/paths/~1/post/requestBody'
       responses:
