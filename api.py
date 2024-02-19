@@ -1,8 +1,12 @@
 from flask import Flask, request, jsonify, make_response
+import pickle
+import numpy as np
+from sklearn.preprocessing import LabelEncoder
 
 app = Flask(__name__)
 
-@app.route('/predict-crops', methods=['POST'])
+@app.route('/', methods=['POST'])
+@app.route('/recommend', methods=['POST'])
 def predict_crops():
     # Get the input data from the request
     data = request.get_json()
@@ -17,11 +21,6 @@ def predict_crops():
     response = predict_top_crops(data)
 
     return make_response(response, 200)
-
-import pickle
-import numpy as np
-from sklearn.preprocessing import LabelEncoder
-from flask import jsonify
 
 def predict_top_crops(data):
     # Load the model
