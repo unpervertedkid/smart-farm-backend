@@ -78,11 +78,7 @@ labels = data['label']
 
 # Model training
 
-X_train, X_test,\
-	Y_train, Y_test = train_test_split(features,
-									labels,
-									test_size=0.2,
-									random_state=42)
+X_train, X_test,Y_train, Y_test = train_test_split(features,labels,test_size=0.2,random_state=42)
 
 
 # Pass the training set into the
@@ -94,8 +90,7 @@ predicted_values = LogisticRegressionModel.predict(X_test)
 
 # Measure the accuracy of the test 
 # set using accuracy_score metric
-accuracy = metrics.accuracy_score(Y_test,
-								predicted_values)
+accuracy = metrics.accuracy_score(Y_test,predicted_values)
 
 
 # Print out the accuracy of the model
@@ -103,8 +98,7 @@ print("Logistic Regression Accuracy: ", accuracy)
 
 # Print the accuracy for each crop
 # Get detail metrics 
-print(metrics.classification_report(Y_test,
-									predicted_values))
+print(metrics.classification_report(Y_test,predicted_values))
 
 # Save the model
 filename = 'CropPrediction.pkl'
