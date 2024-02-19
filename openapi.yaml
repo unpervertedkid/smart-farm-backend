@@ -1,0 +1,72 @@
+openapi: 3.0.0
+info:
+  title: Crop Prediction API
+  version: 1.0.0
+servers:
+  - url: https://supreme-enigma-wxqwx5qqwjxf5qp4-5050.preview.app.github.dev
+paths:
+  /:
+    post:
+      summary: Predict top crops
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Nitrogen:
+                  type: number
+                Phosphorus:
+                  type: number
+                Potassium:
+                  type: number
+                Temperature:
+                  type: number
+                Humidity:
+                  type: number
+                pH:
+                  type: number
+                Rainfall:
+                  type: number
+              required:
+                - Nitrogen
+                - Phosphorus
+                - Potassium
+                - Temperature
+                - Humidity
+                - pH
+                - Rainfall
+      responses:
+        '200':
+          description: A list of top crops with their probabilities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    probability:
+                      type: number
+        '400':
+          description: Bad request, missing field
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /recommend:
+    post:
+      summary: Predict top crops
+      requestBody:
+        $ref: '#/paths/~1/post/requestBody'
+      responses:
+        '200':
+          $ref: '#/paths/~1/post/responses/200'
+        '400':
+          $ref: '#/paths/~1/post/responses/400'
