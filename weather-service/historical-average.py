@@ -59,4 +59,4 @@ latitude = -0.7761
 duration_months = 3
 
 average_rain = get_historical_rain(longitude, latitude, duration_months)
-print(f"Average rainfall for the past {duration_months} months in Nairobi, Kenya: {average_rain} mm")
+print(f"Average rainfall for the past 3 years for a {duration_months} month duration in Nairobi, Kenya: {average_rain} mm")
