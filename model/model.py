@@ -100,9 +100,13 @@ print("Logistic Regression Accuracy: ", accuracy)
 # Get detail metrics 
 print(metrics.classification_report(Y_test,predicted_values))
 
+import os
+
 # Save the model
 filename = 'CropPrediction.pkl'
-filepath = './models'
+directory = './model'
 
-pickle.dump(LogisticRegressionModel, open(filepath + filename, 'wb'))
+# Use os.path.join to construct the file path
+filepath = os.path.join(directory, filename)
 
+pickle.dump(LogisticRegressionModel, open(filepath, 'wb'))
