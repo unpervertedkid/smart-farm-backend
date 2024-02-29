@@ -126,9 +126,22 @@ def get_average_weather_data(averages):
     return overall_average_relative_humidity, overall_average_temperature, overall_average_precipitation
 
 
+def get_estimated_weather_conditions(longitude, latitude, duration_months, start_date=None):
+    # Call the get_weather_data function with the given parameters
+    averages = get_weather_data(longitude, latitude, duration_months, start_date)
+    
+    # Call the get_average_weather_data function with the averages data
+    overall_averages = get_average_weather_data(averages)
+    
+    # Return the overall averages
+    return overall_averages
+
+
+# Example usage
 # Call the get_average_weather_data function with the averages data
 
 averages = get_weather_data(-0.7761, 34.9468, 3)
-print(averages)
+print("Average for each year: \n" + str(averages))
+print()
 overall_averages = get_average_weather_data(averages)
-print(overall_averages)
+print("Average combined: \n" + str(overall_averages))
