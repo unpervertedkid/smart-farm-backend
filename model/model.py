@@ -102,6 +102,7 @@ print(metrics.classification_report(Y_test,predicted_values))
 
 # Save the model
 filename = 'CropPrediction.pkl'
+filepath = './models'
 
-pickle.dump(LogisticRegressionModel, open(filename, 'wb'))
+pickle.dump(LogisticRegressionModel, open(filepath + filename, 'wb'))
 
