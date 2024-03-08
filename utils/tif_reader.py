@@ -11,10 +11,4 @@ def get_value_at_point(raster_file, lon, lat):
         
     return value
 
-# Test the function
-lon = 36.817223  # replace with your longitude
-lat = 1.286389  # replace with your latitude
-raster_file = 'phosphorus.tif'  # replace with your raster file path
 
-value = get_value_at_point(raster_file, lon, lat)
-print(f'The value at point ({lon}, {lat}) is {value}')

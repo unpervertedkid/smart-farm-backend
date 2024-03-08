@@ -5,7 +5,20 @@ from retry_requests import retry
 from datetime import timedelta
 from datetime import date
 
-def get_weather_data(latitude, longitude, duration_months, start_date=None):
+def get_estimated_weather_conditions(longitude, latitude, duration_months=3, start_date=None):
+    # Call the get_weather_data function with the given parameters
+    averages = _get_weather_data(longitude, latitude, duration_months, start_date)
+    
+    # Call the get_average_weather_data function with the averages data
+    overall_averages = _get_average_weather_data(averages)
+    
+    return {
+        'relative_humidity': overall_averages[0],
+        'temperature': overall_averages[1],
+        'precipitation': overall_averages[2]
+    }
+
+def _get_weather_data(latitude, longitude, duration_months, start_date=None):
     cache_session = requests_cache.CachedSession('.cache', expire_after=-1)
     retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
     openmeteo = openmeteo_requests.Client(session=retry_session)
@@ -97,7 +110,7 @@ def get_weather_data(latitude, longitude, duration_months, start_date=None):
 
     return averages
 
-def get_average_weather_data(averages):
+def _get_average_weather_data(averages):
     # Initialize variables to store the sum of each parameter
     sum_relative_humidity = 0
     sum_temperature = 0
@@ -126,22 +139,14 @@ def get_average_weather_data(averages):
     return overall_average_relative_humidity, overall_average_temperature, overall_average_precipitation
 
 
-def get_estimated_weather_conditions(longitude, latitude, duration_months, start_date=None):
-    # Call the get_weather_data function with the given parameters
-    averages = get_weather_data(longitude, latitude, duration_months, start_date)
-    
-    # Call the get_average_weather_data function with the averages data
-    overall_averages = get_average_weather_data(averages)
-    
-    # Return the overall averages
-    return overall_averages
+
 
 
 # Example usage
-# Call the get_average_weather_data function with the averages data
+# Average weather for nairobi
+longitude = 36.817223
+latitude = 1.286389
 
-averages = get_weather_data(-0.7761, 34.9468, 3)
-print("Average for each year: \n" + str(averages))
-print()
-overall_averages = get_average_weather_data(averages)
-print("Average combined: \n" + str(overall_averages))
+# Get the estimated weather conditions for the next 3 months
+estimated_weather = get_estimated_weather_conditions(longitude, latitude, 3)
+print(estimated_weather)
