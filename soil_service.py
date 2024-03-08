@@ -1,5 +1,5 @@
 import requests
-from utils.tif_reader import get_value_at_point
+from tif_reader import get_value_at_point
 
 def get_soil_properties(longitude, latitude):
     # Get nitrogen and pH values 
