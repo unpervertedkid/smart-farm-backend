@@ -1,2 +1,19 @@
 # Ignore sqlite files
 .*.sqlite
+# Ignore Python virtual environments
+venv/
+*.pyc
+__pycache__/
+
+# Ignore Jupyter Notebook files
+.ipynb_checkpoints/
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore build and distribution directories
+build/
+dist/
+
+# Ignore Python egg-info directories
+*.egg-info/
