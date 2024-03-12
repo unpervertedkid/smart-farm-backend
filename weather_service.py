@@ -15,7 +15,7 @@ def get_estimated_weather_conditions(longitude, latitude, duration_months=3, sta
     return {
         'relative_humidity': overall_averages[0],
         'temperature': overall_averages[1],
-        'precipitation': overall_averages[2]
+        'rainfall': overall_averages[2]
     }
 
 def _get_weather_data(latitude, longitude, duration_months, start_date=None):
@@ -51,7 +51,7 @@ def _get_weather_data(latitude, longitude, duration_months, start_date=None):
             "start_date": start_date_year.strftime('%Y-%m-%d'),
             "end_date": end_date_year.strftime('%Y-%m-%d'),
             "hourly": "relative_humidity_2m",
-            "daily": ["temperature_2m_mean", "precipitation_sum"],
+            "daily": ["temperature_2m_mean", "rain_sum"],
             "timezone": "Africa/Cairo"
         }
 		
@@ -79,7 +79,7 @@ def _get_weather_data(latitude, longitude, duration_months, start_date=None):
         # Process daily data
         daily = response.Daily()
         daily_temperature_2m_mean = daily.Variables(0).ValuesAsNumpy()
-        daily_precipitation_sum = daily.Variables(1).ValuesAsNumpy()
+        daily_rainfall_sum = daily.Variables(1).ValuesAsNumpy()
 
         daily_data = {"date": pd.date_range(
             start=pd.to_datetime(daily.Time(), unit="s", utc=True),
@@ -88,7 +88,7 @@ def _get_weather_data(latitude, longitude, duration_months, start_date=None):
             inclusive="left"
         )}
         daily_data["temperature_2m_mean"] = daily_temperature_2m_mean
-        daily_data["precipitation_sum"] = daily_precipitation_sum
+        daily_data["rain_sum"] = daily_rainfall_sum
 
         daily_dataframe = pd.DataFrame(data=daily_data)
 
@@ -99,13 +99,13 @@ def _get_weather_data(latitude, longitude, duration_months, start_date=None):
         # Calculate the averages for the current year
         average_daily_relative_humidity = hourly_dataframe_daily['relative_humidity_2m'].mean()
         average_daily_temperature = daily_dataframe['temperature_2m_mean'].mean()
-        average_daily_precipitation = daily_dataframe['precipitation_sum'].mean()
+        average_daily_rainfall = daily_dataframe['rain_sum'].mean()
 
         # Store the averages in the dictionary
         averages[start_date_year.year] = {
             'average_daily_relative_humidity': average_daily_relative_humidity,
             'average_daily_temperature': average_daily_temperature,
-            'average_daily_precipitation': average_daily_precipitation
+            'average_daily_rainfall': average_daily_rainfall
         }
 
     return averages
@@ -122,7 +122,7 @@ def _get_average_weather_data(averages):
         year_data = averages[year]
         average_relative_humidity = year_data['average_daily_relative_humidity']
         average_temperature = year_data['average_daily_temperature']
-        average_precipitation = year_data['average_daily_precipitation']
+        average_precipitation = year_data['average_daily_rainfall']
             
         # Add the averages to the sum variables
         sum_relative_humidity += average_relative_humidity
