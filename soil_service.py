@@ -14,7 +14,7 @@ def get_soil_properties(longitude, latitude):
 
     return {
         'nitrogen': nitrogen_and_ph['nitrogen'],
-        'ph': nitrogen_and_ph['phh2o'],
+        'ph': nitrogen_and_ph['phh2o']/10,  # Convert to pH as is received in pH*10
         'phosphorus': phosphorus,
         'potassium': potassium
     }
