@@ -16,7 +16,7 @@ def get_crop_recommendations(longitude, latitude):
         "temperature": estimated_weather_conditions['temperature'],
         "humidity": estimated_weather_conditions['relative_humidity'],
         "ph": soil_properties['ph'],
-        "rainfall": estimated_weather_conditions['precipitation']
+        "rainfall": estimated_weather_conditions['rainfall']
     }
 
     # Load the model
@@ -26,12 +26,27 @@ def get_crop_recommendations(longitude, latitude):
     # Prepare the data
     input_data = pd.DataFrame([data], columns=['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall'])
 
-    # Make a prediction
-    prediction = model.predict(input_data)
+    # Get probabilities for each class
+    probabilities = model.predict_proba(input_data)[0]
 
-    print(prediction)
+    # Get the top 3 predictions
+    top_three = np.argsort(probabilities)[-3:][::-1]
+
+    # Get the class labels
+    class_labels = model.classes_
+
+    # Prepare the results
+    results = []
+    for i in top_three:
+        results.append({
+            "crop": class_labels[i],
+            "confidence": round(probabilities[i] * 100)  # Convert to percentage and round off
+        })
+
+    return results
 
 # Example usage for nairobi
-longitude = 36.817223
-latitude = 1.286389
-get_crop_recommendations(longitude, latitude)
+longitude = 34.76666
+latitude = -0.68174
+results = get_crop_recommendations(longitude, latitude)
+print(results)

@@ -41,7 +41,8 @@ def _get_weather_data(latitude, longitude, duration_months, start_date=None):
         # Calculate the start and end date for the current year
         start_date_year = start_date - timedelta(days=365*current_year)
         end_date_year = end_date - timedelta(days=365*current_year)
-
+        days_between_dates = (end_date_year - start_date_year).days
+        
         current_year += 1
         
         # Define the parameters for the API request
@@ -99,13 +100,14 @@ def _get_weather_data(latitude, longitude, duration_months, start_date=None):
         # Calculate the averages for the current year
         average_daily_relative_humidity = hourly_dataframe_daily['relative_humidity_2m'].mean()
         average_daily_temperature = daily_dataframe['temperature_2m_mean'].mean()
-        average_daily_rainfall = daily_dataframe['rain_sum'].mean()
+        sum_rainfall_for_duration = daily_dataframe['rain_sum'].sum()
+        
 
         # Store the averages in the dictionary
         averages[start_date_year.year] = {
             'average_daily_relative_humidity': average_daily_relative_humidity,
             'average_daily_temperature': average_daily_temperature,
-            'average_daily_rainfall': average_daily_rainfall
+            'sum_rainfall_for_duration': sum_rainfall_for_duration
         }
 
     return averages
@@ -114,7 +116,7 @@ def _get_average_weather_data(averages):
     # Initialize variables to store the sum of each parameter
     sum_relative_humidity = 0
     sum_temperature = 0
-    sum_precipitation = 0
+    sum_rainfall = 0
         
     # Loop over the years in the averages dictionary
     for year in averages:
@@ -122,21 +124,21 @@ def _get_average_weather_data(averages):
         year_data = averages[year]
         average_relative_humidity = year_data['average_daily_relative_humidity']
         average_temperature = year_data['average_daily_temperature']
-        average_precipitation = year_data['average_daily_rainfall']
+        average_rainfall = year_data['sum_rainfall_for_duration']
             
         # Add the averages to the sum variables
         sum_relative_humidity += average_relative_humidity
         sum_temperature += average_temperature
-        sum_precipitation += average_precipitation
+        sum_rainfall += average_rainfall
         
     # Calculate the overall averages
     num_years = len(averages)
     overall_average_relative_humidity = sum_relative_humidity / num_years
     overall_average_temperature = sum_temperature / num_years
-    overall_average_precipitation = sum_precipitation / num_years
+    overall_average_rainfall = sum_rainfall / num_years
         
     # Return the overall averages
-    return overall_average_relative_humidity, overall_average_temperature, overall_average_precipitation
+    return overall_average_relative_humidity, overall_average_temperature, overall_average_rainfall
 
 
 
