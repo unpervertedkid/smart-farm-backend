@@ -41,7 +41,6 @@ def _get_weather_data(latitude, longitude, duration_months, start_date=None):
         # Calculate the start and end date for the current year
         start_date_year = start_date - timedelta(days=365*current_year)
         end_date_year = end_date - timedelta(days=365*current_year)
-        days_between_dates = (end_date_year - start_date_year).days
         
         current_year += 1
         
