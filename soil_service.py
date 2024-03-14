@@ -6,16 +6,18 @@ def get_soil_properties(longitude, latitude):
     nitrogen_and_ph = _get_nitrogen_and_ph(longitude, latitude)
 
     # Get phosphorus and potassium values
-    phosphorus_raster_file = 'phosphorus.tif'
+    phosphorus_raster_file = 'kenya_phosphorus.tif'
     potassium_raster_file = 'potassium.tif'
 
-    phosphorus = get_value_at_point(phosphorus_raster_file, longitude, latitude)
+    phosphorus_mg_per_100kg = get_value_at_point(phosphorus_raster_file, longitude, latitude)/100 # Divide by 100 to convert to ppm
+    phosphorus_ratio = _convert_phosphorus_to_ppa(phosphorus_mg_per_100kg)
+    
     potassium = get_value_at_point(potassium_raster_file, longitude, latitude)
 
     return {
         'nitrogen': nitrogen_and_ph['nitrogen'],
         'ph': nitrogen_and_ph['phh2o']/10,  # Convert to pH as is received in pH*10
-        'phosphorus': phosphorus,
+        'phosphorus': phosphorus_ratio,
         'potassium': potassium
     }
 
@@ -50,6 +52,21 @@ def _compute_mean_for_first_three_depths(response):
 
     return result
 
+def _convert_phosphorus_to_ppa(phosphorus_mg_per_100kg):
+    # Convert mg/100kg to ppm
+    phosphorus_ppm = phosphorus_mg_per_100kg / 10
+
+    # Convert ppm to pounds per acre (ppa) of phosphorus
+    ppa_phosphorus = phosphorus_ppm * 2.3
+
+    # Assuming soil depth of 30 cm (approximately 11.8 inches)
+    soil_depth_inches = 11.8
+
+    # Calculate the phosphorus ratio
+    phosphorus_ratio = ppa_phosphorus / soil_depth_inches
+    
+    return phosphorus_ratio
+    
 # Example usage for nairobi
 longitude = 36.817223
 latitude = 1.286389
