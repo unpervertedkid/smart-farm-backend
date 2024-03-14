@@ -66,10 +66,3 @@ def _convert_phosphorus_to_ppa(phosphorus_mg_per_100kg):
     phosphorus_ratio = ppa_phosphorus / soil_depth_inches
     
     return phosphorus_ratio
-    
-# Example usage for nairobi
-longitude = 36.817223
-latitude = 1.286389
-
-soil_properties = get_soil_properties(longitude, latitude)
-print(soil_properties)

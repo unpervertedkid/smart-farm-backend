@@ -44,9 +44,3 @@ def get_crop_recommendations(longitude, latitude):
         })
 
     return results
-
-# Example usage for nairobi
-longitude = 34.76666
-latitude = -0.68174
-results = get_crop_recommendations(longitude, latitude)
-print(results)

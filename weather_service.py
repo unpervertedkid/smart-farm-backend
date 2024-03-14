@@ -138,16 +138,3 @@ def _get_average_weather_data(averages):
         
     # Return the overall averages
     return overall_average_relative_humidity, overall_average_temperature, overall_average_rainfall
-
-
-
-
-
-# Example usage
-# Average weather for nairobi
-longitude = 36.817223
-latitude = 1.286389
-
-# Get the estimated weather conditions for the next 3 months
-estimated_weather = get_estimated_weather_conditions(longitude, latitude, 3)
-print(estimated_weather)
