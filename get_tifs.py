@@ -1,7 +1,6 @@
 import rasterio
 from rasterio.mask import mask
 import geopandas as gpd
-from shapely.geometry import mapping
 
 def download_and_save_geotiff(name, link, geojson_path):
     # Read GeoJSON
