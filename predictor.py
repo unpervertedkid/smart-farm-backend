@@ -2,11 +2,14 @@ import numpy as np
 import pickle
 import pandas as pd
 
-from soil_service import get_soil_properties
+from soil_service import get_soil_properties, LocationNotSupportedError
 from weather_service import get_estimated_weather_conditions
 
 def get_crop_recommendations(longitude, latitude):
-    soil_properties = get_soil_properties(longitude, latitude)
+    try:
+        soil_properties = get_soil_properties(longitude, latitude)
+    except LocationNotSupportedError as e:
+        raise e
     estimated_weather_conditions = get_estimated_weather_conditions(longitude, latitude)
 
     data = {

@@ -1,5 +1,8 @@
 import requests
 from tif_reader import get_value_at_point
+class LocationNotSupportedError(Exception):
+    """Raised when a location is not supported"""
+    pass
 
 def get_soil_properties(longitude, latitude):
     # Get nitrogen and pH values 
@@ -37,7 +40,14 @@ def _fetch_nitrogen_and_ph(longitude, latitude):
         'referer': 'https://soilgrids.org/',
     }
     response = requests.get(url, headers=headers)
-    return response.json()
+    response_json = response.json()
+
+    # Check if all mean values are None
+    for layer in response_json['properties']['layers']:
+        if all(depth['values']['mean'] is None for depth in layer['depths']):
+            raise LocationNotSupportedError(f"Location with longitude {longitude} and latitude {latitude} is not supported")
+
+    return response_json
 
 def _compute_mean_for_first_three_depths(response):
     properties = response['properties']['layers']
