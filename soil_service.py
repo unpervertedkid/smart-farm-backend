@@ -12,15 +12,14 @@ def get_soil_properties(longitude, latitude):
     phosphorus_raster_file = 'data/kenya_phosphorus.tif'
     potassium_raster_file = 'data/kenya_potassium.tif'
 
-    phosphorus_mg_per_100kg = get_value_at_point(phosphorus_raster_file, longitude, latitude)/100 # Divide by 100 to convert to ppm
-    phosphorus_ratio = _convert_phosphorus_to_ppa(phosphorus_mg_per_100kg)
+    phosphorus = get_value_at_point(phosphorus_raster_file, longitude, latitude)/100 # Divide by 100 to convert to ppm
     
     potassium = get_value_at_point(potassium_raster_file, longitude, latitude)
 
     return {
         'nitrogen': nitrogen_and_ph['nitrogen'],
         'ph': nitrogen_and_ph['phh2o']/10,  # Convert to pH as is received in pH*10
-        'phosphorus': phosphorus_ratio,
+        'phosphorus': phosphorus,
         'potassium': potassium
     }
 
