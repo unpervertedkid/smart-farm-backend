@@ -3,7 +3,7 @@ import pickle
 import pandas as pd
 
 from soil_service import get_soil_properties, LocationNotSupportedError
-from weather_service import get_estimated_weather_conditions
+from weather_service import get_estimated_weather_conditions, get_rainfall_history
 
 def get_crop_recommendations(longitude, latitude):
     try:
@@ -47,3 +47,8 @@ def get_crop_recommendations(longitude, latitude):
         })
 
     return results
+
+def recommend_planting_times(longitude, latitude, crop_name):
+    # Get the rainfall history
+    # Todo
+    return None
