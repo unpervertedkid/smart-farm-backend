@@ -30,4 +30,4 @@ def recommend_crops():
     return make_response(response, 200)
 
 if __name__ == '__main__':
-    app.run(port=5050)
+    app.run(port=8080)
