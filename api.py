@@ -24,7 +24,7 @@ def recommend_crops():
 
     try:
         # Get crop recommendations
-        response = get_crop_recommendations(latitude, longitude)
+        response = get_crop_recommendations(longitude, latitude)
     except LocationNotSupportedError:
         return make_response(jsonify({'error': 'Location not supported'}), 400)
 
