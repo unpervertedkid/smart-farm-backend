@@ -41,10 +41,12 @@ def get_crop_recommendations(longitude, latitude):
     # Prepare the results
     results = []
     for i in top_three:
-        results.append({
-            "crop": class_labels[i],
-            "confidence": round(probabilities[i] * 100)  # Convert to percentage and round off
-        })
+        confidence = round(probabilities[i] * 100)  # Convert to percentage and round off
+        if confidence > 20:
+            results.append({
+                "crop": class_labels[i],
+                "confidence": confidence
+            })
 
     return results
 
