@@ -2,7 +2,8 @@ import os
 from flask import Flask, request, jsonify, make_response
 from predictor import get_crop_recommendations, get_plant_time_recommendations
 from soil_service import LocationNotSupportedError
-from errors import UnsupportedCropError
+from errors import UnsupportedCropError, FileReadError
+from utils import get_all_crops
 
 app = Flask(__name__)
 
@@ -53,9 +54,18 @@ def recommend_plant_time():
         # Get the planting recommendations
         response = get_plant_time_recommendations(longitude=longitude, latitude=latitude, crop_name=data['crop'])
     except UnsupportedCropError as e:
-        return make_response(jsonify({'error': str(e)}), 400)
+        supported_crops = get_all_crops()
+        return make_response(jsonify({'error': str(e), 'supported_crops': supported_crops}), 400)
 
     return make_response(jsonify(response), 200)
+
+@app.route('/crops', methods=['GET'])
+def get_crops():
+    try:
+        crops = get_all_crops()
+    except FileReadError:
+        return make_response(jsonify({'error': 'Failed to read the crops data'}), 500)
+    return make_response(jsonify(crops), 200)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))

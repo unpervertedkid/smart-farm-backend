@@ -13,3 +13,6 @@ class UnsupportedCropError(Exception):
 
     def __str__(self):
         return f'{self.crop} -> {self.message}'
+    
+class FileReadError(Exception):
+    """Exception raised when a file read operation fails."""
