@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from weather_service import get_rainfall_history
 
-def get_plant_time_recommendations(longitude, latitude, planting_duration):
+def recommend_plant_time_recommendations(longitude, latitude, planting_duration):
     """
     Get plant time recommendations based on rainfall history.
 
@@ -16,7 +16,7 @@ def get_plant_time_recommendations(longitude, latitude, planting_duration):
 
     """
     # Get the rainfall history
-    rainfall_history = get_rainfall_history(longitude, latitude)
+    rainfall_history = get_rainfall_history(longitude=longitude, latitude=latitude)
 
     # Calculate the average rainfall
     rainfall_prediction = calculate_average_rainfall(rainfall_history)

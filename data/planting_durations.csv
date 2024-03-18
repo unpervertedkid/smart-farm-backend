@@ -1,4 +1,4 @@
-Crop Name,Time to Harvest (in days)
+crop,duration(days)
 rice,100
 maize,90
 chickpea,75

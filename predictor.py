@@ -3,7 +3,10 @@ import pickle
 import pandas as pd
 
 from soil_service import get_soil_properties, LocationNotSupportedError
-from weather_service import get_estimated_weather_conditions, get_rainfall_history
+from weather_service import get_estimated_weather_conditions
+from plant_time_predictor import recommend_plant_time_recommendations
+from utils import get_planting_duration
+from errors import UnsupportedCropError
 
 def get_crop_recommendations(longitude, latitude):
     try:
@@ -50,7 +53,28 @@ def get_crop_recommendations(longitude, latitude):
 
     return results
 
-def recommend_planting_times(longitude, latitude, crop_name):
-    # Get the rainfall history
-    # Todo
-    return None
+
+def get_plant_time_recommendations(longitude, latitude, crop_name):
+    """
+    Get plant time recommendations based on the given longitude, latitude, and crop name.
+
+    Parameters:
+    - longitude (float): The longitude of the location.
+    - latitude (float): The latitude of the location.
+    - crop_name (str): The name of the crop.
+
+    Returns:
+    - recommendations (list): A list of recommended plant time periods.
+
+    """
+    try:
+        # Get the planting duration for the crop
+        planting_duration = get_planting_duration(crop_name)
+    except UnsupportedCropError as e:
+        # Rethrow the error
+        raise e
+
+    # Get the planting recommendations
+    recommendations = recommend_plant_time_recommendations(longitude=longitude, latitude=latitude, planting_duration=planting_duration)
+
+    return recommendations
