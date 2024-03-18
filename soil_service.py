@@ -12,9 +12,11 @@ def get_soil_properties(longitude, latitude):
     phosphorus_raster_file = 'data/kenya_phosphorus.tif'
     potassium_raster_file = 'data/kenya_potassium.tif'
 
-    phosphorus = get_value_at_point(phosphorus_raster_file, longitude, latitude)/100 # Divide by 100 to convert to ppm
-    
-    potassium = get_value_at_point(potassium_raster_file, longitude, latitude)
+    try:
+        phosphorus = get_value_at_point(phosphorus_raster_file, longitude, latitude)/100 # Divide by 100 to convert to ppm
+        potassium = get_value_at_point(potassium_raster_file, longitude, latitude)
+    except Exception:
+        raise LocationNotSupportedError(f"Location with longitude {longitude} and latitude {latitude} is not supported")
 
     return {
         'nitrogen': nitrogen_and_ph['nitrogen'],
