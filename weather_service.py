@@ -179,8 +179,6 @@ def get_rainfall_history(longitude, latitude, duration_in_years=3):
     )}
     daily_data["rain_sum"] = daily_rain_sum
 
-    daily_dataframe = pd.DataFrame(data = daily_data)
+    daily_dataframe = pd.DataFrame(data=daily_data)
+    daily_dataframe = daily_dataframe[~((daily_dataframe.date.dt.month == 2) & (daily_dataframe.date.dt.day == 29))]
     return daily_dataframe
-    
-# Test the function with a duration of three years
-print(get_rainfall_history(-0.7761, 34.9468, 3))
