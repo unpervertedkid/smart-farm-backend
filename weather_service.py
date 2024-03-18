@@ -145,13 +145,11 @@ def get_rainfall_history(longitude, latitude, duration_in_years=3):
     retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
     openmeteo = openmeteo_requests.Client(session=retry_session)
     
-    results = {}
     # End should be the previous year 31st December and start should be duration of years before that but 1st January
-    one_year_ago = date.today() - timedelta(days=365)
-    end_date = one_year_ago.replace(month=12, day=31)
+    end_date = date.today().replace(month=1, day=1)
     
     start_date = end_date - timedelta(days=365*duration_in_years)
-    start_date = start_date.replace(month=1, day=1)
+    start_date = start_date.replace(month=1, day=2)
     
     
     url = "https://archive-api.open-meteo.com/v1/archive"
@@ -185,4 +183,4 @@ def get_rainfall_history(longitude, latitude, duration_in_years=3):
     return daily_dataframe
     
 # Test the function with a duration of three years
-get_rainfall_history(-0.7761, 34.9468, 3)
+print(get_rainfall_history(-0.7761, 34.9468, 3))
