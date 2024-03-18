@@ -54,7 +54,8 @@ def recommend_plant_time():
         # Get the planting recommendations
         response = get_plant_time_recommendations(longitude=longitude, latitude=latitude, crop_name=data['crop'])
     except UnsupportedCropError as e:
-        return make_response(jsonify({'error': str(e)}), 400)
+        supported_crops = get_all_crops()
+        return make_response(jsonify({'error': str(e), 'supported_crops': supported_crops}), 400)
 
     return make_response(jsonify(response), 200)
 
