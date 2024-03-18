@@ -1,3 +1,6 @@
+import pandas as pd
+from errors import UnsupportedCropError
+
 def convert_ppm_to_ppa(ppm, depth_cm, bulk_density=1.6):
     """
     Convert ppm to ppa given the depth in cm.
@@ -49,3 +52,15 @@ def calculate_extractable_nutrients(ppm_P, ppm_K, depth_cm, bulk_density=1.6):
     K2O_per_acre = ppa_K * 1.2046
 
     return P2O5_per_acre, K2O_per_acre
+
+
+def get_planting_duration(crop_name):
+    crop_name = crop_name.lower()
+    
+    # Read the planting duration csv
+    planting_durations = pd.read_csv('data/planting_durations.csv')
+    
+    if crop_name not in planting_durations['crop'].values:
+        raise UnsupportedCropError(f"The crop '{crop_name}' is not supported.")
+    
+    return planting_durations[planting_durations['crop'] == crop_name]['duration(days)'].values[0]
