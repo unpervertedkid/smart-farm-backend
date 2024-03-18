@@ -1,5 +1,5 @@
 import pandas as pd
-from errors import UnsupportedCropError
+from errors import FileReadError, UnsupportedCropError
 
 def convert_ppm_to_ppa(ppm, depth_cm, bulk_density=1.6):
     """
@@ -64,3 +64,13 @@ def get_planting_duration(crop_name):
         raise UnsupportedCropError(f"The crop '{crop_name}' is not supported.")
     
     return planting_durations[planting_durations['crop'] == crop_name]['duration(days)'].values[0]
+
+
+
+def get_all_crops():
+    try:
+        # Read the planting duration csv
+        planting_durations = pd.read_csv('data/planting_durations.csv')
+    except Exception as e:
+        raise FileReadError("Failed to read the file 'data/planting_durations.csv'")
+    return planting_durations['crop'].values.tolist()
