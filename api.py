@@ -5,7 +5,10 @@ from soil_service import LocationNotSupportedError
 from errors import UnsupportedCropError, FileReadError
 from utils import get_all_crops
 
+from flask_cors import CORS
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type' 
 
 @app.route('/crop-recommendations', methods=['POST'])
 def recommend_crops():
