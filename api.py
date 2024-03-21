@@ -31,7 +31,7 @@ def recommend_crops():
         # Get crop recommendations
         response = get_crop_recommendations(longitude, latitude)
     except LocationNotSupportedError:
-        return make_response(jsonify({'error': 'Location not supported'}), 400)
+        return make_response(jsonify({'error': 'Location not supported'}), 404)
 
     return make_response(response, 200)
 
@@ -58,7 +58,7 @@ def recommend_plant_time():
         response = get_plant_time_recommendations(longitude=longitude, latitude=latitude, crop_name=data['crop'])
     except UnsupportedCropError as e:
         supported_crops = get_all_crops()
-        return make_response(jsonify({'error': str(e), 'supported_crops': supported_crops}), 400)
+        return make_response(jsonify({'error': str(e), 'supported_crops': supported_crops}), 404)
 
     return make_response(jsonify(response), 200)
 
